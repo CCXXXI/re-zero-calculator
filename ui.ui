@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1080</width>
+    <height>720</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1080</width>
+    <height>720</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1080</width>
+    <height>720</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Re:0手游装备推荐器&amp;伤害计算器v2.2.0</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>icon.png</normaloff>icon.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTextBrowser" name="browser">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>10</y>
+      <width>931</width>
+      <height>681</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Consolas</family>
+      <pointsize>9</pointsize>
+      <underline>false</underline>
+      <strikeout>false</strikeout>
+      <kerning>true</kerning>
+     </font>
+    </property>
+    <property name="html">
+     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Consolas'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>121</width>
+      <height>551</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>7</number>
+     </property>
+     <property name="sizeConstraint">
+      <enum>QLayout::SetDefaultConstraint</enum>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="pushButton_import_para">
+       <property name="text">
+        <string>指定角色数据</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_import_xzq">
+       <property name="text">
+        <string>指定心之器数据</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_run">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>导入数据并计算</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="checkBox_mfq">
+       <property name="text">
+        <string>重塑魔法器</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_mfq">
+       <property name="text">
+        <string>指定魔法器</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBox_mfq">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="maxVisibleItems">
+        <number>39</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>阴之水晶球</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>不蚀的箭矢</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>六面回音骰</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>女王的金器</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>倒流的沙漏</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>银质假面</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>石封之光</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>指引的胸针</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>龙纹手杖</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>附灵之戒</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>颤栗之匙</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>魔焰匕首</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>命运之刻</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>古怪的陶罐</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>沉睡的吊坠</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_mfq_k">
+       <property name="text">
+        <string>魔法器质量系数</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBox_mfq_k">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="editable">
+        <bool>false</bool>
+       </property>
+       <property name="currentIndex">
+        <number>5</number>
+       </property>
+       <property name="maxVisibleItems">
+        <number>18</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>100%(最好)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>97.5%(S)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>95%(S/A)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>91.25%(A)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>87.5%(A/B)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>81.25%(B)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>75%(B/C)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>70%(C)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>65%(C/D)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>57.5%(D)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>50%(最差)</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_mfq_num">
+       <property name="text">
+        <string>输出类词条数</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_mfq_num">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>12</number>
+       </property>
+       <property name="value">
+        <number>8</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_xzq">
+       <property name="text">
+        <string>指定心之器</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="xzq_1">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="placeholderText">
+        <string>剑圣的名义</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="xzq_2"/>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="xzq_3"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="bar"/>
+  <action name="action_import">
+   <property name="text">
+    <string>导入</string>
+   </property>
+  </action>
+  <action name="action_export">
+   <property name="text">
+    <string>导出</string>
+   </property>
+  </action>
+ </widget>
+ <tabstops>
+  <tabstop>pushButton_import_para</tabstop>
+  <tabstop>pushButton_import_xzq</tabstop>
+  <tabstop>pushButton_run</tabstop>
+  <tabstop>checkBox_mfq</tabstop>
+  <tabstop>comboBox_mfq</tabstop>
+  <tabstop>comboBox_mfq_k</tabstop>
+  <tabstop>spinBox_mfq_num</tabstop>
+  <tabstop>xzq_1</tabstop>
+  <tabstop>xzq_2</tabstop>
+  <tabstop>xzq_3</tabstop>
+  <tabstop>browser</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pushButton_import_para</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>import_para()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>30</x>
+     <y>24</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>41</x>
+     <y>137</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_import_xzq</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>import_xzq()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>67</x>
+     <y>68</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>78</x>
+     <y>162</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_run</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>run()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>103</x>
+     <y>102</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>111</x>
+     <y>189</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_mfq</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>set_mfq_enabled()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>66</x>
+     <y>220</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>70</x>
+     <y>400</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>import_para()</slot>
+  <slot>run()</slot>
+  <slot>import_xzq()</slot>
+  <slot>set_mfq_enabled()</slot>
+ </slots>
+</ui>
