@@ -16,30 +16,31 @@ def calc_core(para):
     """伤害计算核心部分"""
     atk = para['atk']
     crit = para['crit']
-    dfc = para['dfc']
-    dfc_ign = para['dfc_ign']
-    dfc_ign_crit = para['dfc_ign_crit']
     crit_dam = para['crit_dam']
-    skill_rate = para['skill_rate']
     combo = para['combo']
     combo_dam = para['combo_dam']
-    anger = para['anger']
     scaling = para['scaling']
+    anger_rate = para['anger_rate']
     conti_begin = para['conti_begin']
     conti_delta = para['conti_delta']
+    skill_rate = para['skill_rate']
+    hits = para['hits']
+    dfc_rate = para['dfc_rate']
+    dfc_rate_crit = para['dfc_rate_crit']
 
-    rtn_other_k = atk * (crit * (375 / (375 + dfc * (1 - dfc_ign_crit))) * crit_dam
-                         + (1 - crit) * (375 / (375 + dfc * (1 - dfc_ign))))
-    rtn_other = [skill_rate[i] * rtn_other_k for i in range(3)]
-    rtn_ub = skill_rate[-1] * atk * (1 + crit * (crit_dam - 1)) * (375 / (375 + dfc * (1 - dfc_ign)))
-    hits = [x * max(y, 1) for x, y in zip(para['skill'], para['hits'])]
-    rtn_other = [(rtn_other[i] + hits[i] * atk * combo_dam * combo) for i in range(3)]
-    rtn_ub += 2 * para['skill'][-1] * combo * atk * combo_dam
-    rtn_ub *= (anger + 1000) / 2000
-    rtn_other = [rtn_other[i] * (1 + scaling) for i in range(3)]
-    rtn_ub *= (1 + scaling) * conti_begin
-    rtn_other = [rtn_other[i] * (conti_begin + conti_delta[i] / max(hits[i], 1) * (hits[i] - 1) / 2) for i in range(3)]
-    rtn = sum(rtn_other) + rtn_ub
+    rtn_normal = (1 - crit) * dfc_rate
+    rtn_crit = crit * crit_dam * dfc_rate_crit
+    rtn_ub_crit = crit * crit_dam * dfc_rate
+    rtn_combo = combo_dam * combo
+
+    rtn_other = [skill_rate[i] * (rtn_normal + rtn_crit) + hits[i] * rtn_combo for i in range(3)]
+    rtn_other = [rtn_other[i] * (conti_begin + conti_delta[i]) for i in range(3)]
+
+    rtn_ub = (rtn_normal + rtn_ub_crit + 2 * rtn_combo) * skill_rate[-1]
+    rtn_ub *= anger_rate * conti_begin
+
+    rtn_other.append(rtn_ub)
+    rtn = sum(rtn_other) * atk * (1 + scaling)
 
     return rtn
 
@@ -254,9 +255,9 @@ class Solver:
         xzq_info.transpose()
 
     def calc_xzq(self, result_num, xzq_choice: set):
-        def valid_xzq(xzq, _key):
+        def valid_xzq(xzq, y):
             """心之器阈值判定"""
-            return sum(self.xzq_info.value(x, _key) for x in xzq) * 1.0001
+            return sum(self.xzq_info.value(x, y) for x in xzq) * 1.0001
 
         para_limit = {}
         for key in self.para_limit.row_index:
@@ -297,19 +298,27 @@ class Solver:
 
         atk_base = self.para_info.value("atk_base", "值")
         combo_to_crit = self.para_info.value("combo_to_crit", "值")
-        skill_scaling = [0] + [xzq_val[self.xzq_info.col_index[x]] for x in ['ap', 'sp', 'ub']]
-        skill = self.skill_info.get_row('skill')
-        ratio = self.skill_info.get_row('ratio')
-        conti = self.skill_info.get_row('conti')
 
+        self.skill_info.data = np.maximum(self.skill_info.data, 0)
+        ratio = self.skill_info.get_row('ratio')
+        hits = self.skill_info.get_row('hits')
+        skill = self.skill_info.get_row('skill')
+        hits = [max(x, 1) for x in hits]
+
+        skill_scaling = [0] + [xzq_val[self.xzq_info.col_index[x]] for x in ['ap', 'sp', 'ub']]
         self.para['skill_rate'] = [((1 + skill_scaling[i]) * skill[i] * ratio[i]) for i in range(4)]
-        self.para['skill'] = skill
-        self.para['hits'] = self.skill_info.get_row('hits')
-        self.para['dfc'] = self.para_info.value('dfc', '值')
-        self.para['anger'] = self.para_info.value('anger', '值')
+        self.para['hits'] = [x * y for x, y in zip(hits, skill)]
+
+        conti = self.skill_info.get_row('conti')
         self.para['conti_begin'] = self.para_info.value('conti_begin', '值')
-        self.para['dfc_ign'] = xzq_val[self.xzq_info.col_index['dfc_ign']] + self.para_info.value('dfc_ign', '值')
-        self.para['conti_delta'] = conti[:3]
+        self.para['conti_delta'] = [conti[i] / hits[i] * (hits[i] - 1) / 2 for i in range(3)]
+
+        dfc = self.para_info.value('dfc', '值')
+        dfc_ign = xzq_val[self.xzq_info.col_index['dfc_ign']] + self.para_info.value('dfc_ign', '值')
+        dfc_ign_crit = self.para['dfc_ign_crit']
+        self.para['dfc_rate'] = 375 / (375 + dfc * np.maximum(1 - dfc_ign, 0))
+        self.para['dfc_rate_crit'] = 375 / (375 + dfc * np.maximum(1 - dfc_ign - dfc_ign_crit, 0))
+        self.para['anger_rate'] = (self.para_info.value('anger', '值') + 1000) / 2000
 
         max_rtn = 0
         max_mfq = 0
@@ -321,13 +330,12 @@ class Solver:
                 i2 = self.mfq_info.row_index[y]
                 para[y] = xzq_val[i1] + self.mfq_info.data[i2][x]
             para['atk'] += para['atk_bonus'] * atk_base
-            para['dfc_ign_crit'] = para['dfc_ign_crit'] + para['dfc_ign']
             # 剑圣连击转暴击
             if combo_to_crit >= 0:
                 para['crit'] += para['combo']
                 para['combo'] = 0
             # 属性上限处理
-            para_upper = {'crit': 1, 'combo': 1, 'crit_dam': 3, 'dfc_ign': 1, 'dfc_ign_crit': 1}
+            para_upper = {'crit': 1, 'combo': 1, 'crit_dam': 3}
             for key, value in para_upper.items():
                 para[key] = np.minimum(para[key], value)
             # 箭矢额外连携
@@ -370,12 +378,12 @@ class Solver:
 if __name__ == '__main__':
     import time
 
-    print('Re0手游装备推荐器&伤害计算器v2.2.0')
+    print('【当前环境】algo测试v2.3.0')
     t = time.time()
     sol = Solver()
     sol.load_xzq("心之器.xlsx")
-    sol.load_role("阿尼茉尼.xlsx")
-    sol.load_mfq("阿尼茉尼.xlsx", 0, 0.8, 9)
+    sol.load_role("角色.xlsx")
+    sol.load_mfq("角色.xlsx", 0, 0.8, 9)
     ans = sol.calc_xzq(5, set())
     print(time.time() - t)
     for xx in ans:

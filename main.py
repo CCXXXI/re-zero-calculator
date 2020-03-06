@@ -1,133 +1,57 @@
-import sys
-from PyQt5 import QtWidgets
-from PyQt5.QtCore import QThread, pyqtSignal
+import configparser
 
-from ui import Ui_MainWindow
-from algo import Solver
+config = configparser.ConfigParser()
+config.read('README.txt', encoding='UTF-8')
+run_mode = config['交互模式']['交互模式']
+print(f'运行模式：{run_mode}')
+assert run_mode in {'图形界面', '命令行', '文件'}
 
 
-class UI(QtWidgets.QMainWindow, Ui_MainWindow):
-    def __init__(self):
-        QtWidgets.QMainWindow.__init__(self)
-        Ui_MainWindow.__init__(self)
-        self.setupUi(self)
-        self.xzq_file = self.para_file = None
-        sys.stdout = self
-        print('窗口初始化完毕\n')
-        self.prt_html('先指定角色数据文件（如<b><font color="#006000">阿尼茉尼.xlsx</font></b>）和'
-                      '心之器数据文件（如<b><font color="#006000">心之器.xlsx</font></b>"），然后导入数据并计算<br>')
-        print('若勾选重塑魔法器，会忽略在xlsx文件中填写的魔法器，并按照给定参数自动计算一套最优的魔法器\n')
-        print('可以自行指定0到3个心之器，被指定的心之器一定会在结果中出现（这可能导致计算结果不是最优解）\n')
-        self.prt_html('有任何bug/问题/建议，可以加群反馈 --> <b><font color="#642100">1011182537</font></b><br>')
+def main():
+    if run_mode == '图形界面':
+        import sys
+        from PyQt5 import QtWidgets
+        from window import UI
 
-    def import_para(self):
-        options = QtWidgets.QFileDialog.Options()
-        filename, _ = QtWidgets.QFileDialog.getOpenFileName(self, "指定角色数据文件", "", "xlsx文件(*.xlsx)",
-                                                            options=options)
-        if filename:
-            self.para_file = filename
-            self.prt_html(f'角色数据文件已指定为<b><font color="#006000">{filename}</font></b><br>')
-        self.run_valid()
+        app = QtWidgets.QApplication(sys.argv)
+        ui = UI()
+        ui.show()
+        sys.exit(app.exec_())
 
-    def import_xzq(self):
-        options = QtWidgets.QFileDialog.Options()
-        filename, _ = QtWidgets.QFileDialog.getOpenFileName(self, "指定心之器数据文件", "", "xlsx文件(*.xlsx)",
-                                                            options=options)
-        if filename:
-            self.xzq_file = filename
-            self.prt_html(f'心之器数据文件已指定为<b><font color="#006000">{filename}</font></b><br>')
-        self.run_valid()
+    else:
+        from algo import Solver
 
-    def run_valid(self):
-        valid = self.xzq_file is not None and self.para_file is not None
-        self.pushButton_run.setEnabled(valid)
+        sol = Solver()
+        xzq_file, role_file = config['xlsx文件']['心之器'], config['xlsx文件']['角色']
+        ans_num = int(config['输出数量']['输出数量'])
+        print('命令行初始化完毕')
+        print('建议先阅读README.txt')
 
-    def set_mfq_enabled(self):
-        flag = self.checkBox_mfq.isChecked()
-        self.comboBox_mfq.setEnabled(flag)
-        self.comboBox_mfq_k.setEnabled(flag)
-        self.spinBox_mfq_num.setEnabled(flag)
-
-    def get_mfq_choice(self):
-        if not self.checkBox_mfq.isChecked():
-            return -1
+        if run_mode == '命令行':
+            mfq_choice = input('指定魔法器，直接回车表示不重塑，0表示阴之水晶球，其他魔法器编号见README.txt：')
+            mfq_choice = int(mfq_choice) if mfq_choice else -1
+            mfq_k = float(input('指定魔法器质量系数，0.8表示最大值的80%(大概是B级)，1表示最大值(最好的S级)：'))
+            mfq_num = int(input('指定魔法器有效词条数，1到12：'))
+            xzq_choice = set(input('指定0到3个心之器，空格分隔：').split())
         else:
-            return self.comboBox_mfq.currentIndex()
-
-    def get_xzq_choice(self):
-        return {x.text() for x in (self.xzq_1, self.xzq_2, self.xzq_3) if x.text()}
-
-    def write(self, s):
-        self.browser.insertPlainText(s)
-        self.browser.moveCursor(self.browser.textCursor().End)
-        QtWidgets.QApplication.processEvents()
-
-    def prt_html(self, s):
-        self.browser.insertHtml(s + '<br>')
-        self.browser.moveCursor(self.browser.textCursor().End)
-        QtWidgets.QApplication.processEvents()
-
-    def write_statusbar(self, s):
-        self.bar.showMessage(s)
-
-    def flush(self):
-        pass
-
-    def run(self):
-        self.setEnabled(False)
-        ans_para = [2 if self.checkBox_mfq.isChecked() else 3, self.get_xzq_choice()]
-        sol = Run(ans_para)
-        sol.ans.connect(self.prt_ans)
-        sol.write = self.write_statusbar
-        sol.load_xzq(self.xzq_file)
-        sol.load_role(self.para_file)
-        k = [1, 0.975, 0.95, 0.9125, 0.875, 0.8125, 0.75, 0.7, 0.65, 0.575, 0.5][self.comboBox_mfq_k.currentIndex()]
-        sol.load_mfq(self.para_file, self.get_mfq_choice(), k, self.spinBox_mfq_num.value())
-        sol.start()
-
-    def prt_ans(self, ans):
-        self.browser.clear()
-        for an in ans:
-            for a, av in an.items():
-                self.prt_html(f'<big><b>{a[1:]}</b></big>')
-                temp = []
-                if isinstance(av, dict):
-                    for key, value in av.items():
-                        if isinstance(value, float):
-                            value = str(value * 100) + '%'
-                        elif isinstance(value, int):
-                            value = str(value)
-                        temp.append(f'<b>{key}</b>:{value}')
-                if isinstance(av, tuple):
-                    temp.extend(av)
-                if isinstance(av, int):
-                    temp.append(str(av))
-                self.prt_html('\t'.join(temp))
-                print()
+            mfq_choice = -1 if int(config['魔法器选项']['重塑']) else int(config['魔法器选项']['指定魔法器'])
+            mfq_k, mfq_num = float(config['魔法器选项']['质量系数']), int(config['魔法器选项']['有效词条数'])
+            xzq_choice = set(filter(None, [config['心之器选项']['指定心之器1'],
+                                           config['心之器选项']['指定心之器2'], config['心之器选项']['指定心之器3']]))
+        print(f'输出答案数指定为{ans_num}，心之器、角色文件分别指定为{xzq_file}、{role_file}，可在README.txt中调整')
+        sol.load_xzq(xzq_file)
+        sol.load_role(role_file)
+        sol.load_mfq(role_file, mfq_choice, mfq_k, mfq_num)
+        ans = sol.calc_xzq(ans_num, xzq_choice)
+        if not ans:
+            print('无解')
+        for xx in ans:
+            for yy in xx:
+                print(yy[1:])
+                print(xx[yy])
             print()
-        self.setEnabled(True)
 
 
-class Run(QThread, Solver):
-    ans = pyqtSignal(list)
-
-    def __init__(self, ans_para):
-        print('计算线程启动并初始化中……')
-        QThread.__init__(self)
-        Solver.__init__(self)
-        sys.stderr = self
-        self.ans_para = ans_para
-
-    def run(self):
-        print('计算开始')
-        self.ans.emit(self.calc_xzq(*self.ans_para))
-
-    def flush(self):
-        pass
-
-
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    ui = UI()
-    ui.show()
-    sys.exit(app.exec_())
+if __name__ == '__main__':
+    print('Re0手游装备推荐器&伤害计算器v2.3.0')
+    main()

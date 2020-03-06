@@ -5,8 +5,9 @@ Created on Fri Feb 21 11:10:26 2020
 @author: bruceye
 """
 import math
-import pandas as pd
 import numpy as np
+# from pandas import read_excel
+from tools_excel import get_data
 
 title_map = {'满级ATK': 'atk', '基础攻击': 'atk_bonus', '暴击几率': 'crit', '暴击伤害': 'crit_dam', '连击几率': 'combo',
              '连击伤害': 'combo_dam', '造成伤害': 'scaling', '忽视防御': 'dfc_ign', '吸取生命': 'vampire', 'AP技能伤害': 'ap',
@@ -28,7 +29,8 @@ class ParaArray:
             return
 
         try:
-            data = pd.read_excel(file_path, sheet_name=sheet_name).to_dict()
+            # data = read_excel(file_path, sheet_name=sheet_name).to_dict()
+            data = get_data(file_path, sheet_name)
         except FileNotFoundError:
             print(file_path, '-', sheet_name, '未找到')
             raise
@@ -88,4 +90,8 @@ class ParaArray:
 
 
 if __name__ == '__main__':
-    pass
+    print('【当前环境】tools测试v2.3.0')
+    test = ParaArray('心之器.xlsx', '心之器属性')
+    print(test.data)
+    print(test.col_index)
+    print(test.row_index)
