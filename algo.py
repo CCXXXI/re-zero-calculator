@@ -28,19 +28,16 @@ def calc_core(para):
     dfc_rate = para['dfc_rate']
     dfc_rate_crit = para['dfc_rate_crit']
 
-    rtn_normal = (1 - crit) * dfc_rate
-    rtn_crit = crit * crit_dam * dfc_rate_crit
-    rtn_ub_crit = crit * crit_dam * dfc_rate
+    rtn_normal = (1 - crit) * dfc_rate + crit * crit_dam * dfc_rate_crit
     rtn_combo = combo_dam * combo
+    rtn_other = [skill_rate[i] * rtn_normal + hits[i] * rtn_combo for i in range(3)]
 
-    rtn_other = [skill_rate[i] * (rtn_normal + rtn_crit) + hits[i] * rtn_combo for i in range(3)]
-    rtn_other = [rtn_other[i] * (conti_begin + conti_delta[i]) for i in range(3)]
-
-    rtn_ub = (rtn_normal + rtn_ub_crit + 2 * rtn_combo) * skill_rate[-1]
-    rtn_ub *= anger_rate * conti_begin
-
+    rtn_ub = (1 + crit * (crit_dam - 1) + 4 * rtn_combo) * dfc_rate
+    rtn_ub *= skill_rate[-1] * anger_rate
     rtn_other.append(rtn_ub)
-    rtn = sum(rtn_other) * atk * (1 + scaling)
+
+    rtn = sum(rtn_other[i] * (conti_begin + conti_delta[i]) for i in range(4))
+    rtn *= atk * (1 + scaling)
 
     return rtn
 
@@ -309,9 +306,13 @@ class Solver:
         self.para['skill_rate'] = [((1 + skill_scaling[i]) * skill[i] * ratio[i]) for i in range(4)]
         self.para['hits'] = [x * y for x, y in zip(hits, skill)]
 
-        conti = self.skill_info.get_row('conti')
         self.para['conti_begin'] = self.para_info.value('conti_begin', '值')
-        self.para['conti_delta'] = [conti[i] / hits[i] * (hits[i] - 1) / 2 for i in range(3)]
+        if 'conti_real' in self.skill_info.row_index:
+            conti_real = self.skill_info.get_row('conti_real')
+            conti_delta = [conti_real[i] for i in range(4)]
+        else:
+            conti = self.skill_info.get_row('conti')
+            conti_delta = [conti[i] / hits[i] * (hits[i] - 1) / 2 for i in range(4)]
 
         dfc = self.para_info.value('dfc', '值')
         dfc_ign = xzq_val[self.xzq_info.col_index['dfc_ign']] + self.para_info.value('dfc_ign', '值')
@@ -339,9 +340,10 @@ class Solver:
             for key, value in para_upper.items():
                 para[key] = np.minimum(para[key], value)
             # 箭矢额外连携
+            para['conti_delta'] = conti_delta.copy()
             if para['arrow'] == 1:
-                conti_delta = [conti[i] + para['hits'][i] * para['combo'] * 0.02 for i in range(3)]
-                para['conti_delta'] = conti_delta
+                for i in range(3):
+                    para['conti_delta'][i] += (hits[i] - 1) * para['combo'] * 0.01
 
             rtn = calc_core(para)
             # 属性限制
@@ -378,7 +380,7 @@ class Solver:
 if __name__ == '__main__':
     import time
 
-    print('【当前环境】algo测试v2.3.0')
+    print('【当前环境】algo测试v3.0.0')
     t = time.time()
     sol = Solver()
     sol.load_xzq("心之器.xlsx")

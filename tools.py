@@ -90,7 +90,7 @@ class ParaArray:
 
 
 if __name__ == '__main__':
-    print('【当前环境】tools测试v2.3.0')
+    print('【当前环境】tools测试v3.0.0')
     test = ParaArray('心之器.xlsx', '心之器属性')
     print(test.data)
     print(test.col_index)

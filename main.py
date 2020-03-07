@@ -53,5 +53,5 @@ def main():
 
 
 if __name__ == '__main__':
-    print('Re0手游装备推荐器&伤害计算器v2.3.0')
+    print('Re0手游装备推荐器&伤害计算器v3.0.0')
     main()
