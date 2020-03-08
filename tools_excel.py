@@ -18,6 +18,6 @@ def get_data(file_path, sheet_name):
 
 
 if __name__ == '__main__':
-    print('【当前环境】tools_excel测试v3.0.0')
+    print('【当前环境】tools_excel测试v3.0.1')
     test = get_data('心之器.xlsx', '心之器属性')
     print(test)

@@ -380,7 +380,7 @@ class Solver:
 if __name__ == '__main__':
     import time
 
-    print('【当前环境】algo测试v3.0.0')
+    print('【当前环境】algo测试v3.0.1')
     t = time.time()
     sol = Solver()
     sol.load_xzq("心之器.xlsx")

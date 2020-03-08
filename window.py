@@ -61,7 +61,7 @@ class UI(QtWidgets.QMainWindow, Ui_MainWindow):
     def write(self, s):
         sys.__stdout__.write(s)
         self.browser.insertPlainText(s)
-        # self.browser.moveCursor(self.browser.textCursor().End)
+        self.browser.moveCursor(self.browser.textCursor().End)
         QtWidgets.QApplication.processEvents()
 
     def prt_html(self, s):
@@ -133,7 +133,7 @@ class Run(QThread, Solver):
 
 
 if __name__ == "__main__":
-    print('【当前环境】window测试v3.0.0')
+    print('【当前环境】window测试v3.0.1')
     app = QtWidgets.QApplication(sys.argv)
     ui = UI()
     ui.show()
