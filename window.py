@@ -28,9 +28,11 @@ class UI(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def import_para(self):
         options = QtWidgets.QFileDialog.Options()
-        filename, _ = QtWidgets.QFileDialog.getOpenFileName(
-            self, "指定角色数据文件", "", "xlsx文件(*.xlsx)", options=options
-        )
+        filename, _ = QtWidgets.QFileDialog.getOpenFileName(self,
+                                                            "指定角色数据文件",
+                                                            "",
+                                                            "xlsx文件(*.xlsx)",
+                                                            options=options)
         if filename:
             self.para_file = filename
             self.prt_html(
@@ -40,9 +42,11 @@ class UI(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def import_xzq(self):
         options = QtWidgets.QFileDialog.Options()
-        filename, _ = QtWidgets.QFileDialog.getOpenFileName(
-            self, "指定心之器数据文件", "", "xlsx文件(*.xlsx)", options=options
-        )
+        filename, _ = QtWidgets.QFileDialog.getOpenFileName(self,
+                                                            "指定心之器数据文件",
+                                                            "",
+                                                            "xlsx文件(*.xlsx)",
+                                                            options=options)
         if filename:
             self.xzq_file = filename
             self.prt_html(
@@ -67,7 +71,10 @@ class UI(QtWidgets.QMainWindow, Ui_MainWindow):
             return self.comboBox_mfq.currentIndex()
 
     def get_xzq_choice(self):
-        return {x.text() for x in (self.xzq_1, self.xzq_2, self.xzq_3) if x.text()}
+        return {
+            x.text()
+            for x in (self.xzq_1, self.xzq_2, self.xzq_3) if x.text()
+        }
 
     def write(self, s):
         sys.__stdout__.write(s)
@@ -90,19 +97,20 @@ class UI(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def run(self):
         self.setEnabled(False)
-        ans_para = [2 if self.checkBox_mfq.isChecked() else 3,
-                    self.get_xzq_choice()]
+        ans_para = [
+            2 if self.checkBox_mfq.isChecked() else 3,
+            self.get_xzq_choice()
+        ]
         sol = Run(ans_para)
         sol.ans.connect(self.prt_ans)
         sol.write = self.write_statusbar
         sol.load_xzq(self.xzq_file)
         sol.load_role(self.para_file)
-        k = [1, 0.975, 0.95, 0.9125, 0.875, 0.8125, 0.75, 0.7, 0.65, 0.575, 0.5][
-            self.comboBox_mfq_k.currentIndex()
-        ]
-        sol.load_mfq(
-            self.para_file, self.get_mfq_choice(), k, self.spinBox_mfq_num.value()
-        )
+        k = [
+            1, 0.975, 0.95, 0.9125, 0.875, 0.8125, 0.75, 0.7, 0.65, 0.575, 0.5
+        ][self.comboBox_mfq_k.currentIndex()]
+        sol.load_mfq(self.para_file, self.get_mfq_choice(), k,
+                     self.spinBox_mfq_num.value())
         sol.start()
 
     def prt_ans(self, ans):

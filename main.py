@@ -35,13 +35,10 @@ def main():
             mfq_num = int(input("指定魔法器有效词条数，1到12："))
             xzq_choice = set(input("指定0到3个心之器，空格分隔：").split())
         else:
-            mfq_choice = (
-                -1 if int(config["魔法器选项"]["重塑"]
-                          ) else int(config["魔法器选项"]["指定魔法器"])
-            )
+            mfq_choice = (-1 if int(config["魔法器选项"]["重塑"]) else int(
+                config["魔法器选项"]["指定魔法器"]))
             mfq_k, mfq_num = float(config["魔法器选项"]["质量系数"]), int(
-                config["魔法器选项"]["有效词条数"]
-            )
+                config["魔法器选项"]["有效词条数"])
             xzq_choice = set(
                 filter(
                     None,
@@ -50,10 +47,10 @@ def main():
                         config["心之器选项"]["指定心之器2"],
                         config["心之器选项"]["指定心之器3"],
                     ],
-                )
-            )
+                ))
         print(
-            f"输出答案数指定为{ans_num}，心之器、角色文件分别指定为{xzq_file}、{role_file}，可在README.txt中调整")
+            f"输出答案数指定为{ans_num}，心之器、角色文件分别指定为{xzq_file}、{role_file}，可在README.txt中调整"
+        )
         sol.load_xzq(xzq_file)
         sol.load_role(role_file)
         sol.load_mfq(role_file, mfq_choice, mfq_k, mfq_num)

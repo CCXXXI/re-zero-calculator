@@ -58,11 +58,11 @@ class ParaArray:
 
         for x in col_names:
             for y in data[x]:
-                if isinstance(data[x][y], float) or isinstance(data[x][y], int):
+                if isinstance(data[x][y], float) or isinstance(
+                        data[x][y], int):
                     if not math.isnan(data[x][y]):
-                        self.data[row_index[data[title[0]][y]]][col_index[x]] = data[x][
-                            y
-                        ]
+                        self.data[row_index[data[title[0]][y]]][
+                            col_index[x]] = data[x][y]
 
         rename(row_names)
         rename(col_names)
@@ -83,10 +83,10 @@ class ParaArray:
 
     def row_extend(self, names):
         data = np.concatenate(
-            (self.data, np.zeros((1, len(self.col_index)), dtype="double"))
-        )
+            (self.data, np.zeros((1, len(self.col_index)), dtype="double")))
         names_index = [
-            self.row_index[x] if x in self.row_index else len(data) - 1 for x in names
+            self.row_index[x] if x in self.row_index else len(data) - 1
+            for x in names
         ]
         self.data = data[np.array(names_index)]
         self.row_index = self.get_index(names)
