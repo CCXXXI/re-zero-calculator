@@ -18,8 +18,7 @@ class Ui_MainWindow(object):
         MainWindow.setMinimumSize(QtCore.QSize(1080, 720))
         MainWindow.setMaximumSize(QtCore.QSize(1080, 720))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("icon.png"), QtGui.QIcon.Normal,
-                       QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -37,8 +36,7 @@ class Ui_MainWindow(object):
         self.layoutWidget.setGeometry(QtCore.QRect(10, 20, 121, 551))
         self.layoutWidget.setObjectName("layoutWidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.layoutWidget)
-        self.verticalLayout.setSizeConstraint(
-            QtWidgets.QLayout.SetDefaultConstraint)
+        self.verticalLayout.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setSpacing(7)
         self.verticalLayout.setObjectName("verticalLayout")
@@ -52,9 +50,9 @@ class Ui_MainWindow(object):
         self.pushButton_run.setEnabled(False)
         self.pushButton_run.setObjectName("pushButton_run")
         self.verticalLayout.addWidget(self.pushButton_run)
-        spacerItem = QtWidgets.QSpacerItem(20, 40,
-                                           QtWidgets.QSizePolicy.Minimum,
-                                           QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.verticalLayout.addItem(spacerItem)
         self.checkBox_mfq = QtWidgets.QCheckBox(self.layoutWidget)
         self.checkBox_mfq.setObjectName("checkBox_mfq")
@@ -112,9 +110,9 @@ class Ui_MainWindow(object):
         self.spinBox_mfq_num.setProperty("value", 8)
         self.spinBox_mfq_num.setObjectName("spinBox_mfq_num")
         self.verticalLayout.addWidget(self.spinBox_mfq_num)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40,
-                                            QtWidgets.QSizePolicy.Minimum,
-                                            QtWidgets.QSizePolicy.Expanding)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.verticalLayout.addItem(spacerItem1)
         self.label_xzq = QtWidgets.QLabel(self.layoutWidget)
         self.label_xzq.setObjectName("label_xzq")
@@ -143,11 +141,9 @@ class Ui_MainWindow(object):
         self.pushButton_import_para.clicked.connect(MainWindow.import_para)
         self.pushButton_import_xzq.clicked.connect(MainWindow.import_xzq)
         self.pushButton_run.clicked.connect(MainWindow.run)
-        self.checkBox_mfq.stateChanged["int"].connect(
-            MainWindow.set_mfq_enabled)
+        self.checkBox_mfq.stateChanged["int"].connect(MainWindow.set_mfq_enabled)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        MainWindow.setTabOrder(self.pushButton_import_para,
-                               self.pushButton_import_xzq)
+        MainWindow.setTabOrder(self.pushButton_import_para, self.pushButton_import_xzq)
         MainWindow.setTabOrder(self.pushButton_import_xzq, self.pushButton_run)
         MainWindow.setTabOrder(self.pushButton_run, self.checkBox_mfq)
         MainWindow.setTabOrder(self.checkBox_mfq, self.comboBox_mfq)
@@ -160,8 +156,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(
-            _translate("MainWindow", "Re:0手游装备推荐器&伤害计算器v3.0.1"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Re:0手游装备推荐器&伤害计算器v3.0.1"))
         self.browser.setHtml(
             _translate(
                 "MainWindow",
@@ -174,7 +169,8 @@ class Ui_MainWindow(object):
                 " margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;"
                 ' -qt-block-indent:0; text-indent:0px; font-size:12pt;"><br'
                 " /></p></body></html>",
-            ))
+            )
+        )
         self.pushButton_import_para.setText(_translate("MainWindow", "指定角色数据"))
         self.pushButton_import_xzq.setText(_translate("MainWindow", "指定心之器数据"))
         self.pushButton_run.setText(_translate("MainWindow", "导入数据并计算"))
@@ -196,27 +192,17 @@ class Ui_MainWindow(object):
         self.comboBox_mfq.setItemText(13, _translate("MainWindow", "古怪的陶罐"))
         self.comboBox_mfq.setItemText(14, _translate("MainWindow", "沉睡的吊坠"))
         self.label_mfq_k.setText(_translate("MainWindow", "魔法器质量系数"))
-        self.comboBox_mfq_k.setItemText(0, _translate("MainWindow",
-                                                      "100%(最好)"))
-        self.comboBox_mfq_k.setItemText(1, _translate("MainWindow",
-                                                      "97.5%(S)"))
-        self.comboBox_mfq_k.setItemText(2, _translate("MainWindow",
-                                                      "95%(S/A)"))
-        self.comboBox_mfq_k.setItemText(3, _translate("MainWindow",
-                                                      "91.25%(A)"))
-        self.comboBox_mfq_k.setItemText(4,
-                                        _translate("MainWindow", "87.5%(A/B)"))
-        self.comboBox_mfq_k.setItemText(5, _translate("MainWindow",
-                                                      "81.25%(B)"))
-        self.comboBox_mfq_k.setItemText(6, _translate("MainWindow",
-                                                      "75%(B/C)"))
+        self.comboBox_mfq_k.setItemText(0, _translate("MainWindow", "100%(最好)"))
+        self.comboBox_mfq_k.setItemText(1, _translate("MainWindow", "97.5%(S)"))
+        self.comboBox_mfq_k.setItemText(2, _translate("MainWindow", "95%(S/A)"))
+        self.comboBox_mfq_k.setItemText(3, _translate("MainWindow", "91.25%(A)"))
+        self.comboBox_mfq_k.setItemText(4, _translate("MainWindow", "87.5%(A/B)"))
+        self.comboBox_mfq_k.setItemText(5, _translate("MainWindow", "81.25%(B)"))
+        self.comboBox_mfq_k.setItemText(6, _translate("MainWindow", "75%(B/C)"))
         self.comboBox_mfq_k.setItemText(7, _translate("MainWindow", "70%(C)"))
-        self.comboBox_mfq_k.setItemText(8, _translate("MainWindow",
-                                                      "65%(C/D)"))
-        self.comboBox_mfq_k.setItemText(9, _translate("MainWindow",
-                                                      "57.5%(D)"))
-        self.comboBox_mfq_k.setItemText(10, _translate("MainWindow",
-                                                       "50%(最差)"))
+        self.comboBox_mfq_k.setItemText(8, _translate("MainWindow", "65%(C/D)"))
+        self.comboBox_mfq_k.setItemText(9, _translate("MainWindow", "57.5%(D)"))
+        self.comboBox_mfq_k.setItemText(10, _translate("MainWindow", "50%(最差)"))
         self.label_mfq_num.setText(_translate("MainWindow", "输出类词条数"))
         self.label_xzq.setText(_translate("MainWindow", "指定心之器"))
         self.xzq_1.setPlaceholderText(_translate("MainWindow", "剑圣的名义"))
