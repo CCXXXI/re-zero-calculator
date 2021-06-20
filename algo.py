@@ -30,7 +30,8 @@ def calc_core(para):
 
     rtn_normal = (1 - crit) * dfc_rate + crit * crit_dam * dfc_rate_crit
     rtn_combo = combo_dam * combo
-    rtn_other = [skill_rate[i] * rtn_normal + hits[i] * rtn_combo for i in range(3)]
+    rtn_other = [skill_rate[i] * rtn_normal +
+                 hits[i] * rtn_combo for i in range(3)]
 
     rtn_ub = (1 + crit * (crit_dam - 1) + 4 * rtn_combo) * dfc_rate
     rtn_ub *= skill_rate[-1] * anger_rate
@@ -230,7 +231,8 @@ class Solver:
 
         for x in self.panel_info.row_index:
             if x in mfq_info.row_index:
-                mfq_info.data[mfq_info.row_index[x]] += self.panel_info.value(x, "值")
+                mfq_info.data[mfq_info.row_index[x]
+                              ] += self.panel_info.value(x, "值")
 
         self.mfq = mfq
         self.mfq_info = mfq_info
@@ -280,7 +282,8 @@ class Solver:
             xzq_arr = filter(lambda xzq: xzq_choice.issubset(xzq), xzq_arr)
         vampire = self.xzq_limit.value("vampire", "值")
         if vampire > 0:
-            xzq_arr = filter(lambda xzq: valid_xzq(xzq, "vampire") > vampire, xzq_arr)
+            xzq_arr = filter(lambda xzq: valid_xzq(
+                xzq, "vampire") > vampire, xzq_arr)
 
         n21 = self.xzq_limit.value("n2", "值")
         n22 = self.xzq_limit.value("n4", "值")
@@ -289,7 +292,8 @@ class Solver:
         s3 = "战斗怒气提高"
         if n21 - n22 > 0:
             xzq_arr = filter(
-                lambda xzq: (valid_xzq(xzq, s2) + n22) * (1 + valid_xzq(xzq, s3)) > n21,
+                lambda xzq: (valid_xzq(xzq, s2) + n22) *
+                (1 + valid_xzq(xzq, s3)) > n21,
                 xzq_arr,
             )
         n11 = self.xzq_limit.value("n1", "值")
@@ -336,7 +340,8 @@ class Solver:
             conti_delta = [conti_real[i] for i in range(4)]
         else:
             conti = self.skill_info.get_row("conti")
-            conti_delta = [conti[i] / hits[i] * (hits[i] - 1) / 2 for i in range(4)]
+            conti_delta = [conti[i] / hits[i] *
+                           (hits[i] - 1) / 2 for i in range(4)]
 
         dfc = self.para_info.value("dfc", "值")
         dfc_ign = xzq_val[self.xzq_info.col_index["dfc_ign"]] + self.para_info.value(
@@ -347,7 +352,8 @@ class Solver:
         self.para["dfc_rate_crit"] = 375 / (
             375 + dfc * np.maximum(1 - dfc_ign - dfc_ign_crit, 0)
         )
-        self.para["anger_rate"] = (self.para_info.value("anger", "值") + 1000) / 2000
+        self.para["anger_rate"] = (
+            self.para_info.value("anger", "值") + 1000) / 2000
 
         max_rtn = 0
         max_mfq = 0
@@ -371,7 +377,8 @@ class Solver:
             para["conti_delta"] = conti_delta.copy()
             if para["arrow"] == 1:
                 for i in range(3):
-                    para["conti_delta"][i] += (hits[i] - 1) * para["combo"] * 0.01
+                    para["conti_delta"][i] += (hits[i] - 1) * \
+                        para["combo"] * 0.01
 
             rtn = calc_core(para)
             # 属性限制
@@ -395,12 +402,14 @@ class Solver:
                 debug_para[self.mfq.mfq_name_map[y]] = round(
                     xzq_val[i1][x] + self.mfq_info.data[i2][max_mfq[x]], 4
                 )
-            debug_para["攻击"] = int(debug_para["攻击"] + debug_para["基础攻击"] * atk_base)
+            debug_para["攻击"] = int(
+                debug_para["攻击"] + debug_para["基础攻击"] * atk_base)
             del debug_para["基础攻击"]
             result = {"0心之器": xzq_arr[x]}
             if self.mfq_choice >= 0:
                 result["1魔法器主词条"] = self.mfq.mfq_print(mfq[max_mfq[x]])["主词条"]
-                result["2魔法器随机词条"] = self.mfq.mfq_print(mfq[max_mfq[x]])["随机词条"]
+                result["2魔法器随机词条"] = self.mfq.mfq_print(mfq[max_mfq[x]])[
+                    "随机词条"]
             result["3属性"] = debug_para
             result["4总伤害"] = int(max_rtn[x])
             results.append(result)

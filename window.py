@@ -14,7 +14,8 @@ class UI(QtWidgets.QMainWindow, Ui_MainWindow):
         self.xzq_file = self.para_file = None
         sys.stdout = self
         print("窗口初始化完毕\n")
-        self.prt_html('建议先阅读<b><font color="#006000">README.txt</font></b><br>')
+        self.prt_html(
+            '建议先阅读<b><font color="#006000">README.txt</font></b><br>')
         self.prt_html(
             '先指定角色数据文件（如<b><font color="#006000">阿尼茉尼.xlsx</font></b>）和'
             '心之器数据文件（如<b><font color="#006000">心之器.xlsx</font></b>"），然后导入数据并计算<br>'
@@ -89,7 +90,8 @@ class UI(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def run(self):
         self.setEnabled(False)
-        ans_para = [2 if self.checkBox_mfq.isChecked() else 3, self.get_xzq_choice()]
+        ans_para = [2 if self.checkBox_mfq.isChecked() else 3,
+                    self.get_xzq_choice()]
         sol = Run(ans_para)
         sol.ans.connect(self.prt_ans)
         sol.write = self.write_statusbar
