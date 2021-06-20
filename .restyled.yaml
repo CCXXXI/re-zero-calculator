@@ -1,0 +1,9 @@
+restylers:
+  - isort:
+      enabled: false
+  - reorder-python-imports:
+      enabled: false
+  - prettier-markdown:
+      arguments: ["--prose-wrap", "preserve"]
+  - "*"
+  - black
