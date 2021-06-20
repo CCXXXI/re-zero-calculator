@@ -50,7 +50,9 @@ class Ui_MainWindow(object):
         self.pushButton_run.setEnabled(False)
         self.pushButton_run.setObjectName("pushButton_run")
         self.verticalLayout.addWidget(self.pushButton_run)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.verticalLayout.addItem(spacerItem)
         self.checkBox_mfq = QtWidgets.QCheckBox(self.layoutWidget)
         self.checkBox_mfq.setObjectName("checkBox_mfq")
@@ -108,7 +110,9 @@ class Ui_MainWindow(object):
         self.spinBox_mfq_num.setProperty("value", 8)
         self.spinBox_mfq_num.setObjectName("spinBox_mfq_num")
         self.verticalLayout.addWidget(self.spinBox_mfq_num)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.verticalLayout.addItem(spacerItem1)
         self.label_xzq = QtWidgets.QLabel(self.layoutWidget)
         self.label_xzq.setObjectName("label_xzq")
@@ -137,7 +141,7 @@ class Ui_MainWindow(object):
         self.pushButton_import_para.clicked.connect(MainWindow.import_para)
         self.pushButton_import_xzq.clicked.connect(MainWindow.import_xzq)
         self.pushButton_run.clicked.connect(MainWindow.run)
-        self.checkBox_mfq.stateChanged['int'].connect(MainWindow.set_mfq_enabled)
+        self.checkBox_mfq.stateChanged["int"].connect(MainWindow.set_mfq_enabled)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.pushButton_import_para, self.pushButton_import_xzq)
         MainWindow.setTabOrder(self.pushButton_import_xzq, self.pushButton_run)
@@ -153,12 +157,20 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Re:0手游装备推荐器&伤害计算器v3.0.1"))
-        self.browser.setHtml(_translate("MainWindow",
-                                        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-                                        "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-                                        "p, li { white-space: pre-wrap; }\n"
-                                        "</style></head><body style=\" font-family:\'Consolas\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-                                        "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt;\"><br /></p></body></html>"))
+        self.browser.setHtml(
+            _translate(
+                "MainWindow",
+                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN"'
+                ' "http://www.w3.org/TR/REC-html40/strict.dtd">\n<html><head><meta'
+                ' name="qrichtext" content="1" /><style type="text/css">\np, li {'
+                ' white-space: pre-wrap; }\n</style></head><body style="'
+                " font-family:'Consolas'; font-size:9pt; font-weight:400;"
+                ' font-style:normal;">\n<p style="-qt-paragraph-type:empty;'
+                " margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;"
+                ' -qt-block-indent:0; text-indent:0px; font-size:12pt;"><br'
+                " /></p></body></html>",
+            )
+        )
         self.pushButton_import_para.setText(_translate("MainWindow", "指定角色数据"))
         self.pushButton_import_xzq.setText(_translate("MainWindow", "指定心之器数据"))
         self.pushButton_run.setText(_translate("MainWindow", "导入数据并计算"))
